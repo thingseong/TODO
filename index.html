@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>MY First TODO list</title>
+
+    </head>
+    <body>
+        <script>
+            function addTodo(){
+                tmp = document.createElement('li');
+                todo = document.getElementById("todo").value;
+                tmp.innerText = todo;
+                // li 생성
+
+                btn = document.createElement('button');
+                btn.setAttribute('onclick', 'delTodo(this)')
+                btn.innerText = 'del';
+                tmp.appendChild(btn);
+                // del 버튼 생성
+                
+                document.getElementById("todolist").appendChild(tmp);
+                // todo 생성
+            }
+
+            function delTodo(tmp){
+                p = tmp.parentNode;
+                p.remove()
+                
+            }
+        </script>
+        <input type="text" id="todo" name="todo" value="123">
+        <button onclick="addTodo()">Add</button>
+        <ul id='todolist'> 
+            <li>test<button onclick="delTodo(this)">del</button></li>
+
+        </ul>
+    </body>
+</html>
