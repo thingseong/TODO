@@ -20,12 +20,23 @@
                 for (let t in todos){
                     e = document.createElement('li');
                     e.innerText = todos[t]["todo"];
-                    
 
-                    btn = document.createElement('button');
-                    btn.setAttribute('onclick', 'delTodo(this)')
-                    btn.innerText = 'del';
-                    e.appendChild(btn);
+                    upBtn = document.createElement('button');
+                    upBtn.setAttribute('onclick', 'upTodo(this)');
+                    upBtn.innerText = 'UP';
+                    e.appendChild(upBtn);
+
+                    downBtn = document.createElement('button');
+                    downBtn.setAttribute('onclick', 'downTodo(this)');
+                    downBtn.innerText = 'DOWN';
+                    e.appendChild(downBtn);
+
+                    delBtn = document.createElement('button');
+                    delBtn.setAttribute('onclick', 'delTodo(this)');
+                    delBtn.innerText = 'del';
+                    e.appendChild(delBtn);
+
+
 
                     document.getElementById('todolist').appendChild(e);
                 }
@@ -43,10 +54,41 @@
             function delTodo(tmp){
                 p = tmp.parentNode;
                 todo = p.innerText;
-                let i = todos.indexOf(todo);
+                todo = todo.substring(0, todo.length-9);
+                color = "";
+                let i = todos.findIndex(i => i.todo == todo);
                 todos.splice(i,1);
                 p.remove()
                 localStorage.setItem('ob', JSON.stringify(todos));            
+            }
+
+            function upTodo(tmp){
+                p = tmp.parentNode;
+                todo = p.innerText;
+                todo = todo.substring(0, todo.length-9);
+                color = "";
+                let i = todos.findIndex(i => i.todo == todo);
+                console.log(i);
+                todos.splice(i,1);
+                todos.splice(i-1, 0 , {"todo":todo, "color":""});
+
+                showTodo()
+                
+
+            }
+
+            function downTodo(tmp){
+                p = tmp.parentNode;
+                todo = p.innerText;
+                todo = todo.substring(0, todo.length-9);
+                color = "";
+                let i = todos.findIndex(i => i.todo == todo);
+                console.log(i);
+                todos.splice(i,1);
+                todos.splice(i+1, 0 , {"todo":todo, "color":""});
+
+                showTodo()
+
             }
         </script>
         <input type="text" id="todo" name="todo" value="123">
