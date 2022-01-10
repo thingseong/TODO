@@ -18,23 +18,36 @@
                 console.log(todos);
                 document.getElementById('todolist').innerHTML = "";
                 for (let t in todos){
-                    e = document.createElement('li');
-                    e.innerText = todos[t]["todo"];
+                    const e = document.createElement('li');
+
+                    checkBox = document.createElement("input");
+                    checkBox.setAttribute('type', 'checkbox');
+                    checkBox.setAttribute('value', "1");
+                    checkBox.setAttribute('onclick', "checkTodo(this)");
+                    // add check box
+
+
+                    //e.innerText = todos[t]["todo"];
+                    
+
 
                     upBtn = document.createElement('button');
                     upBtn.setAttribute('onclick', 'upTodo(this)');
                     upBtn.innerText = 'UP';
-                    e.appendChild(upBtn);
+                    // e.appendChild(upBtn);
 
                     downBtn = document.createElement('button');
                     downBtn.setAttribute('onclick', 'downTodo(this)');
                     downBtn.innerText = 'DOWN';
-                    e.appendChild(downBtn);
+                    //e.appendChild(downBtn);
 
                     delBtn = document.createElement('button');
                     delBtn.setAttribute('onclick', 'delTodo(this)');
                     delBtn.innerText = 'del';
-                    e.appendChild(delBtn);
+                    //e.appendChild(delBtn);
+
+                    e.append(checkBox, todos[t]["todo"], upBtn, downBtn, delBtn);
+                    
 
 
 
@@ -47,7 +60,8 @@
                 todo = document.getElementById("todo").value;
                 t = {"todo":todo, "color":""}
                 todos.push(t);
-                showTodo()
+                showTodo();
+                document.getElementById("todo").value = "";
 
             }
 
@@ -64,34 +78,51 @@
 
             function upTodo(tmp){
                 p = tmp.parentNode;
-                todo = p.innerText;
-                todo = todo.substring(0, todo.length-9);
-                color = "";
-                let i = todos.findIndex(i => i.todo == todo);
-                console.log(i);
-                todos.splice(i,1);
-                todos.splice(i-1, 0 , {"todo":todo, "color":""});
-
-                showTodo()
+                pre = p.previousSibling;
+                pp = p.parentNode;
+                if (pre == null){
+                    return;
+                }
+                pp.insertBefore(p, pre);
                 
 
             }
 
             function downTodo(tmp){
                 p = tmp.parentNode;
-                todo = p.innerText;
-                todo = todo.substring(0, todo.length-9);
-                color = "";
-                let i = todos.findIndex(i => i.todo == todo);
-                console.log(i);
-                todos.splice(i,1);
-                todos.splice(i+1, 0 , {"todo":todo, "color":""});
-
-                showTodo()
+                next = p.nextSibling;
+                if(next == null){
+                    return;
+                }
+                nnext = next.nextSibling;
+                if(nnext == null){
+                    pp.appendChild(p);
+                    return;
+                }
+                pp = p.parentNode;
+                pp.insertBefore(p, nnext);
 
             }
-        </script>
-        <input type="text" id="todo" name="todo" value="123">
+
+            function checkTodo(tmp){
+                check = tmp.checked;
+                if (check == false){
+                    p.style.color = "black";
+                    p.style.textDecoration = '';
+                    return;
+                }
+                p = tmp.parentNode;
+                todo = p.innerText;
+                todo = todo.substring(0, todo.length-9);
+                console.log(todo);
+                let i = todos.findIndex(i => i.todo == todo);
+                todos[i] = {"todo": todo, "color": "checkd"};
+                p.style.color = "gray";
+                p.style.textDecoration = 'line-through';
+                // 여기 줄긋고 회색 넣어야함 그리고 json 값도 변경해줘야함
+            }
+        </script> 
+        <input type="text" id="todo" name="todo" value="">
         <button onclick="addTodo()">Add</button>
         <ul id='todolist'> 
 
