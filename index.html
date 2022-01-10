@@ -3,40 +3,48 @@
     <head>
         <title>MY First TODO list</title>
     <style>
+        body{
+            text-align: center;
+        }
         ul{
-            width:500px;
-            display: table;
+            align-content: center;
+            width: 500px;
+            list-style:none;
             margin-left: auto;
             margin-right: auto;
             
         }
         li{
-            background-color: rgb(238, 255, 0);
-            border: 1px solid white;
-            width: 500px;
             display: flex;
-            text-align: left;
-            
-
+            text-align: center;
         }
-        button.btn{
-            color:black;
-            border-style: solid;
-            border-color: white;
-            background-color: rgb(201, 201, 201);
-            border-radius: 3px;
-            border : 1px;
-            margin:3px;
-
-
-            
-        }
-        input.check{
-            margin-right:10px;
-        }
-        nav.btns{
+        span{
             margin-left: auto;
         }
+        .check{
+            margin-right:10px;
+            margin-top:2px;
+            zoom: 1.5;
+            size:10px;
+        }
+        .btn{
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+        #todo{
+            zoom: 1.5;
+            border: none;
+            border-bottom: black 1px dashed;
+        }
+        .checked{
+            text-decoration: line-through;
+            color: gray;
+        }
+        .unchecked{
+            text-decoration: none;
+        }
+
+
 
     </style>
 
@@ -56,26 +64,48 @@
                 document.getElementById('todolist').innerHTML = "";
                 for (let t in todos){
                     e = document.createElement('li');
-                    e.innerText = todos[t]["todo"];
+                    let check = "unchecked"
+
+                    
+
+                    checkBox = document.createElement('input');
+                    checkBox.setAttribute("onclick", "checkTodo(this)")
+                    checkBox.setAttribute('type', "checkbox");
+                    checkBox.setAttribute('class', "check");
+                    if(todos[t]['color'] == "t"){
+                        check = "checked"
+                        checkBox.setAttribute('checked', "");
+                    }
+                    e.setAttribute("class", check); // 줄긋기
+
+
+
+                    
+                    spanBtns = document.createElement('span');
+                    spanBtns.setAttribute("class", 'btns');
+                    
+
 
                     upBtn = document.createElement('button');
                     upBtn.setAttribute('class', 'btn');
                     upBtn.setAttribute('onclick', 'upTodo(this)');
                     upBtn.innerText = 'UP';
-                    e.appendChild(upBtn);
+                    
 
                     downBtn = document.createElement('button');
                     downBtn.setAttribute('onclick', 'downTodo(this)');
                     downBtn.setAttribute('class', 'btn');
                     downBtn.innerText = 'DOWN';
-                    e.appendChild(downBtn);
+                    
 
                     delBtn = document.createElement('button');
                     delBtn.setAttribute('onclick', 'delTodo(this)');
-                    delBtn.innerText = 'del';
-                    e.appendChild(delBtn);
+                    delBtn.setAttribute('class', 'btn');
+                    delBtn.innerText = 'DEL';
+                    
 
-
+                    spanBtns.append(upBtn, downBtn, delBtn);
+                    e.append(checkBox, todos[t]["todo"], spanBtns);
 
                     document.getElementById('todolist').appendChild(e);
                 }
@@ -84,14 +114,16 @@
             
             function addTodo(){
                 todo = document.getElementById("todo").value;
-                t = {"todo":todo, "color":""}
+                t = {"todo":todo, "color":"f"}
                 todos.push(t);
                 showTodo()
+                document.getElementById("todo").value = "";
 
             }
 
             function delTodo(tmp){
-                p = tmp.parentNode.parentNode;
+                tmp = tmp.parentNode;
+                p = tmp.parentNode;
                 todo = p.innerText;
                 todo = todo.substring(0, todo.length-9);
                 color = "";
@@ -105,10 +137,14 @@
                 tmp = tmp.parentNode;
                 p = tmp.parentNode;
                 todo = p.innerText;
-                todo = todo.substring(0, todo.length-9);
+                todo = todo.substring(0, todo.length-10);
                 color = "";
                 let i = todos.findIndex(i => i.todo == todo);
+                
                 console.log(i);
+                if(i ==0){
+                    return;
+                }
                 todos.splice(i,1);
                 todos.splice(i-1, 0 , {"todo":todo, "color":""});
 
@@ -119,27 +155,43 @@
 
             function downTodo(tmp){
                 tmp = tmp.parentNode;
+                console.log(tmp);
                 p = tmp.parentNode;
+                console.log(p);
                 todo = p.innerText;
-                todo = todo.substring(0, todo.length-9);
+                todo = todo.substring(0, todo.length-10);
+                console.log(todo);
                 color = "";
                 let i = todos.findIndex(i => i.todo == todo);
                 console.log(i);
+
                 todos.splice(i,1);
                 todos.splice(i+1, 0 , {"todo":todo, "color":""});
 
                 showTodo()
 
             }
-        </script>
-        <input type="text" id="todo" name="todo" value="123">
-        <button onclick="addTodo()">Add</button>
-        <ul id='todolist'> 
 
-        <div align="center">
+            function checkTodo(tmp){
+                console.log("aaaaa")
+                p = tmp.parentNode;
+                todo = p.innerText;
+                todo = todo.substring(0, todo.length-10);
+                let i = todos.findIndex(i => i.todo == todo);
+                if (tmp.checked == true){
+                    todos[i]["color"] = "t";
+                }
+                else todos[i]["color"] = "f";
+
+                showTodo()
+                
+            }
+        </script>
+
+        <div>
             <h1>TODO list</h1>
-            <input type="text" id="todo" name="todo" value="">
-            <button onclick="addTodo()">Add</button>
+            <input type="text" id="todo" name="todo" value="" size="40px" >
+            <button onclick="addTodo()" style="zoom:1.5;">Add</button>
             <ul id='todolist'> 
 
             </ul>
