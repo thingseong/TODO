@@ -2,6 +2,43 @@
 <html>
     <head>
         <title>MY First TODO list</title>
+    <style>
+        ul{
+            width:500px;
+            display: table;
+            margin-left: auto;
+            margin-right: auto;
+            
+        }
+        li{
+            background-color: rgb(238, 255, 0);
+            border: 1px solid white;
+            width: 500px;
+            display: flex;
+            text-align: left;
+            
+
+        }
+        button.btn{
+            color:black;
+            border-style: solid;
+            border-color: white;
+            background-color: rgb(201, 201, 201);
+            border-radius: 3px;
+            border : 1px;
+            margin:3px;
+
+
+            
+        }
+        input.check{
+            margin-right:10px;
+        }
+        nav.btns{
+            margin-left: auto;
+        }
+
+    </style>
 
     </head>
     <body>
@@ -24,29 +61,31 @@
                     checkBox.setAttribute('type', 'checkbox');
                     checkBox.setAttribute('value', "1");
                     checkBox.setAttribute('onclick', "checkTodo(this)");
+                    checkBox.setAttribute('class', 'check');
                     // add check box
 
-
-                    //e.innerText = todos[t]["todo"];
-                    
-
+                    navBtns = document.createElement('nav');
+                    navBtns.setAttribute('class', 'btns');
 
                     upBtn = document.createElement('button');
+                    upBtn.setAttribute('class', 'btn');
                     upBtn.setAttribute('onclick', 'upTodo(this)');
                     upBtn.innerText = 'UP';
-                    // e.appendChild(upBtn);
 
                     downBtn = document.createElement('button');
                     downBtn.setAttribute('onclick', 'downTodo(this)');
+                    downBtn.setAttribute('class', 'btn');
                     downBtn.innerText = 'DOWN';
-                    //e.appendChild(downBtn);
 
                     delBtn = document.createElement('button');
                     delBtn.setAttribute('onclick', 'delTodo(this)');
-                    delBtn.innerText = 'del';
-                    //e.appendChild(delBtn);
+                    delBtn.setAttribute('class', 'btn');
+                    delBtn.innerText = 'DEL';
 
-                    e.append(checkBox, todos[t]["todo"], upBtn, downBtn, delBtn);
+                    navBtns.append(upBtn, downBtn, delBtn);
+
+
+                    e.append(checkBox, todos[t]["todo"], navBtns);
                     
 
 
@@ -66,7 +105,7 @@
             }
 
             function delTodo(tmp){
-                p = tmp.parentNode;
+                p = tmp.parentNode.parentNode;
                 todo = p.innerText;
                 todo = todo.substring(0, todo.length-9);
                 color = "";
@@ -77,6 +116,7 @@
             }
 
             function upTodo(tmp){
+                tmp = tmp.parentNode;
                 p = tmp.parentNode;
                 pre = p.previousSibling;
                 pp = p.parentNode;
@@ -84,11 +124,13 @@
                     return;
                 }
                 pp.insertBefore(p, pre);
+                localStorage.setItem('ob', JSON.stringify(todos));
                 
 
             }
 
             function downTodo(tmp){
+                tmp = tmp.parentNode;
                 p = tmp.parentNode;
                 next = p.nextSibling;
                 if(next == null){
@@ -101,6 +143,7 @@
                 }
                 pp = p.parentNode;
                 pp.insertBefore(p, nnext);
+                localStorage.setItem('ob', JSON.stringify(todos));
 
             }
 
@@ -111,6 +154,7 @@
                     p.style.textDecoration = '';
                     return;
                 }
+                
                 p = tmp.parentNode;
                 todo = p.innerText;
                 todo = todo.substring(0, todo.length-9);
@@ -119,14 +163,18 @@
                 todos[i] = {"todo": todo, "color": "checkd"};
                 p.style.color = "gray";
                 p.style.textDecoration = 'line-through';
-                // 여기 줄긋고 회색 넣어야함 그리고 json 값도 변경해줘야함
             }
-        </script> 
-        <input type="text" id="todo" name="todo" value="">
-        <button onclick="addTodo()">Add</button>
-        <ul id='todolist'> 
 
-        </ul>
+        </script> 
+
+        <div align="center">
+            <h1>TODO list</h1>
+            <input type="text" id="todo" name="todo" value="">
+            <button onclick="addTodo()">Add</button>
+            <ul id='todolist'> 
+
+            </ul>
+        </div>
 
         <script>
             showTodo()
