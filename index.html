@@ -55,38 +55,25 @@
                 console.log(todos);
                 document.getElementById('todolist').innerHTML = "";
                 for (let t in todos){
-                    const e = document.createElement('li');
-
-                    checkBox = document.createElement("input");
-                    checkBox.setAttribute('type', 'checkbox');
-                    checkBox.setAttribute('value', "1");
-                    checkBox.setAttribute('onclick', "checkTodo(this)");
-                    checkBox.setAttribute('class', 'check');
-                    // add check box
-
-                    navBtns = document.createElement('nav');
-                    navBtns.setAttribute('class', 'btns');
+                    e = document.createElement('li');
+                    e.innerText = todos[t]["todo"];
 
                     upBtn = document.createElement('button');
                     upBtn.setAttribute('class', 'btn');
                     upBtn.setAttribute('onclick', 'upTodo(this)');
                     upBtn.innerText = 'UP';
+                    e.appendChild(upBtn);
 
                     downBtn = document.createElement('button');
                     downBtn.setAttribute('onclick', 'downTodo(this)');
                     downBtn.setAttribute('class', 'btn');
                     downBtn.innerText = 'DOWN';
+                    e.appendChild(downBtn);
 
                     delBtn = document.createElement('button');
                     delBtn.setAttribute('onclick', 'delTodo(this)');
-                    delBtn.setAttribute('class', 'btn');
-                    delBtn.innerText = 'DEL';
-
-                    navBtns.append(upBtn, downBtn, delBtn);
-
-
-                    e.append(checkBox, todos[t]["todo"], navBtns);
-                    
+                    delBtn.innerText = 'del';
+                    e.appendChild(delBtn);
 
 
 
@@ -99,8 +86,7 @@
                 todo = document.getElementById("todo").value;
                 t = {"todo":todo, "color":""}
                 todos.push(t);
-                showTodo();
-                document.getElementById("todo").value = "";
+                showTodo()
 
             }
 
@@ -118,13 +104,15 @@
             function upTodo(tmp){
                 tmp = tmp.parentNode;
                 p = tmp.parentNode;
-                pre = p.previousSibling;
-                pp = p.parentNode;
-                if (pre == null){
-                    return;
-                }
-                pp.insertBefore(p, pre);
-                localStorage.setItem('ob', JSON.stringify(todos));
+                todo = p.innerText;
+                todo = todo.substring(0, todo.length-9);
+                color = "";
+                let i = todos.findIndex(i => i.todo == todo);
+                console.log(i);
+                todos.splice(i,1);
+                todos.splice(i-1, 0 , {"todo":todo, "color":""});
+
+                showTodo()
                 
 
             }
@@ -132,40 +120,21 @@
             function downTodo(tmp){
                 tmp = tmp.parentNode;
                 p = tmp.parentNode;
-                next = p.nextSibling;
-                if(next == null){
-                    return;
-                }
-                nnext = next.nextSibling;
-                if(nnext == null){
-                    pp.appendChild(p);
-                    return;
-                }
-                pp = p.parentNode;
-                pp.insertBefore(p, nnext);
-                localStorage.setItem('ob', JSON.stringify(todos));
-
-            }
-
-            function checkTodo(tmp){
-                check = tmp.checked;
-                if (check == false){
-                    p.style.color = "black";
-                    p.style.textDecoration = '';
-                    return;
-                }
-                
-                p = tmp.parentNode;
                 todo = p.innerText;
                 todo = todo.substring(0, todo.length-9);
-                console.log(todo);
+                color = "";
                 let i = todos.findIndex(i => i.todo == todo);
-                todos[i] = {"todo": todo, "color": "checkd"};
-                p.style.color = "gray";
-                p.style.textDecoration = 'line-through';
-            }
+                console.log(i);
+                todos.splice(i,1);
+                todos.splice(i+1, 0 , {"todo":todo, "color":""});
 
-        </script> 
+                showTodo()
+
+            }
+        </script>
+        <input type="text" id="todo" name="todo" value="123">
+        <button onclick="addTodo()">Add</button>
+        <ul id='todolist'> 
 
         <div align="center">
             <h1>TODO list</h1>
