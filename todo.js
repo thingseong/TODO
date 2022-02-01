@@ -11,7 +11,7 @@ function showTodo(){
     for (let t in todos){
         e = document.createElement('li');
         e.id = todos[t]['id'];
-        e.setAttribute("onclick", "tmp(this)")
+        e.setAttribute("onclick", "draw(this)")
         let check = "unchecked"
 
         
@@ -73,7 +73,7 @@ function addTodo(){
     if(todo == ""){
         return myFunction("Failed to add (Enter your TODO)", false);
     }
-    t = {"id": id,"todo":todo, "color":"f"}
+    t = {"id": id,"todo":todo, "color":"f", "when": "", "where": ""}
     todos.push(t);
     showTodo()
     myFunction('Successfully added');
@@ -169,22 +169,37 @@ function showTime(){
     t = today.toLocaleString();
     time.innerText = t;
 }
+
+
 function showInfo(tmp){
     id = tmp.id;
     console.log(id);
     let i = todos.findIndex(i => i.id == id);
     todo = todos[i];
-    info = todo['todo'];
+    // info = todo['todo'];
 
-    e = document.getElementById("info");
-    e.innerText = "what? : " + info;
+
+    e = document.getElementById("todoid");
+    e.value = tmp.id;
+
+    e = document.getElementById("what");
+    e.value = todo['todo'];
+
+    e = document.getElementById("when");
+    e.value = todo['when'];
+
+    e = document.getElementById("where");
+    e.value = todo['where'];
+    // e.innerText = "what? : " + info;
     
 
 }
-function tmp(t){
+function draw(t){
     var x = document.getElementById('drawer');
     if (x.className == "show"){
         x.className = "";
+        setInfo()
+        showTodo();
     }
     else{
         x.className = "show";
@@ -192,6 +207,33 @@ function tmp(t){
     }
 }
 
+function setInfo(){
+    id = document.getElementById('todoid').value;
+    
+    let i = todos.findIndex(i => i.id == id);
+    todo = todos[i];
+    
 
+    what = document.getElementById("what");
+    when = document.getElementById("when");
+    where = document.getElementById("where");
+
+    todo['todo'] = what.value;
+    what.value = "";
+    todo['when'] = when.value;
+    when.value = "";
+    todo['where'] = where.value;
+    where.value = "";
+
+    console.log(todo);
+
+    
+
+
+
+
+
+
+}
 showTodo()
 let t = setInterval(showTime, 1000);

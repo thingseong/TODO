@@ -6,16 +6,17 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Dongle&display=swap" rel="stylesheet"><title>MY First TODO list</title>
         <link rel="stylesheet" href="./todo.css">
+        
     
 
     </head>
     <body>
-        
         <div class='bar'>
             <nav>TODO LIST</nav>
             
         </div>
         <div class='main'>
+            
             <h1 >WHAT SHOULD I DO?</h1>
             <input  onkeyup="enter(event)" type="text" id="todo" name="todo" value="" size="40px" >
             <button class="addBtn fa fa-plus" onclick="addTodo();" style="zoom:1.5;"></button>
@@ -25,15 +26,33 @@
             <div id='time'></div>
         </div>
         <div id="drawer">
-            <span style=" float:right;"><button onclick="tmp()" class="fa fa-times" style="zoom: 1;background-color: #939597; color:white; border: none;"></button></span>
+            <span style=" float:right;">
+                <button onclick="draw()" class="fa fa-check" style="zoom: 1;background-color: #939597; color:white; border: none;"></button>
+                <button onclick="draw()" class="fa fa-times" style="zoom: 1;background-color: #939597; color:white; border: none;"></button>
             
-            <ul style="font-size: 25%; "id='infolist'>
-                <li>I should</li>
-                <li id='info'></li>
-            </ul>
+            </span>
+            <input type="text" id="todoid"value="" disable hidden></span>
+            <label>What</label>
+            <input type="text" id='what' name="what" value="" size="40px"></input></br>
+            <label>When</label>
+            <input type="text" id='when' name="when" value="" size="40px"></input></br>
+            <label>Where</label>
+            <input type="text" id= 'where' name="where" value="" size="40px"></input></br>
+            <div id="map" style="width:400px;height:400px;"></div>
+
         </div>
         <div id="snackbar">Snack Bar</div>
         <script type="text/javascript" src="./todo.js"></script>
+        <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=11ee9dac8bb5404df485ccf4f703fb95"></script>
+        <script>
+            var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+            var options = { //지도를 생성할 때 필요한 기본 옵션
+                center: new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
+                level: 3 //지도의 레벨(확대, 축소 정도)
+            };
+
+            var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+        </script>
         
     </body>
 </html>

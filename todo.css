@@ -179,3 +179,22 @@ span{
     from {bottom: 30px; opacity: 1;}
     to {bottom: 0; opacity: 0;}
 }
+
+
+
+#drawer input{
+    font-size: 40px;
+    background-color: #939597;
+    color: #fff;
+    border: none;
+    font-family: Dongle, sans-serif;
+}
+
+#drawer label{
+    margin-left: 10%;
+}
+#map{
+    position: absolute;
+    right:25%;
+    top:10%;
+}
