@@ -1,204 +1,39 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>MY First TODO list</title>
-    <style>
-        body{
-            text-align: center;
-        }
-        ul{
-            align-content: center;
-            width: 500px;
-            list-style:none;
-            margin-left: auto;
-            margin-right: auto;
-            
-        }
-        li{
-            display: flex;
-            text-align: center;
-        }
-        span{
-            margin-left: auto;
-        }
-        .check{
-            margin-right:10px;
-            margin-top:2px;
-            zoom: 1.5;
-            size:10px;
-        }
-        .btn{
-            margin-left: 5px;
-            margin-right: 5px;
-        }
-        #todo{
-            zoom: 1.5;
-            border: none;
-            border-bottom: black 1px dashed;
-        }
-        .checked{
-            text-decoration: line-through;
-            color: gray;
-        }
-        .unchecked{
-            text-decoration: none;
-        }
-
-
-
-    </style>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Dongle&display=swap" rel="stylesheet"><title>MY First TODO list</title>
+        <link rel="stylesheet" href="./todo.css">
+    
 
     </head>
     <body>
-        <script>
+        
+        <div class='bar'>
+            <nav>TODO LIST</nav>
             
-            todos = JSON.parse(localStorage.getItem('ob'));
-            if (todos == null){
-                todos = new Array();
-            }
-
-            
-            
-            function showTodo(){
-                console.log(todos);
-                document.getElementById('todolist').innerHTML = "";
-                for (let t in todos){
-                    e = document.createElement('li');
-                    let check = "unchecked"
-
-                    
-
-                    checkBox = document.createElement('input');
-                    checkBox.setAttribute("onclick", "checkTodo(this)")
-                    checkBox.setAttribute('type', "checkbox");
-                    checkBox.setAttribute('class', "check");
-                    if(todos[t]['color'] == "t"){
-                        check = "checked"
-                        checkBox.setAttribute('checked', "");
-                    }
-                    e.setAttribute("class", check); // 줄긋기
-
-
-
-                    
-                    spanBtns = document.createElement('span');
-                    spanBtns.setAttribute("class", 'btns');
-                    
-
-
-                    upBtn = document.createElement('button');
-                    upBtn.setAttribute('class', 'btn');
-                    upBtn.setAttribute('onclick', 'upTodo(this)');
-                    upBtn.innerText = 'UP';
-                    
-
-                    downBtn = document.createElement('button');
-                    downBtn.setAttribute('onclick', 'downTodo(this)');
-                    downBtn.setAttribute('class', 'btn');
-                    downBtn.innerText = 'DOWN';
-                    
-
-                    delBtn = document.createElement('button');
-                    delBtn.setAttribute('onclick', 'delTodo(this)');
-                    delBtn.setAttribute('class', 'btn');
-                    delBtn.innerText = 'DEL';
-                    
-
-                    spanBtns.append(upBtn, downBtn, delBtn);
-                    e.append(checkBox, todos[t]["todo"], spanBtns);
-
-                    document.getElementById('todolist').appendChild(e);
-                }
-                localStorage.setItem('ob', JSON.stringify(todos));
-            }
-            
-            function addTodo(){
-                todo = document.getElementById("todo").value;
-                t = {"todo":todo, "color":"f"}
-                todos.push(t);
-                showTodo()
-                document.getElementById("todo").value = "";
-
-            }
-
-            function delTodo(tmp){
-                tmp = tmp.parentNode;
-                p = tmp.parentNode;
-                todo = p.innerText;
-                todo = todo.substring(0, todo.length-9);
-                color = "";
-                let i = todos.findIndex(i => i.todo == todo);
-                todos.splice(i,1);
-                p.remove()
-                localStorage.setItem('ob', JSON.stringify(todos));            
-            }
-
-            function upTodo(tmp){
-                tmp = tmp.parentNode;
-                p = tmp.parentNode;
-                todo = p.innerText;
-                todo = todo.substring(0, todo.length-10);
-                color = "";
-                let i = todos.findIndex(i => i.todo == todo);
-                
-                console.log(i);
-                if(i ==0){
-                    return;
-                }
-                todos.splice(i,1);
-                todos.splice(i-1, 0 , {"todo":todo, "color":""});
-
-                showTodo()
-                
-
-            }
-
-            function downTodo(tmp){
-                tmp = tmp.parentNode;
-                console.log(tmp);
-                p = tmp.parentNode;
-                console.log(p);
-                todo = p.innerText;
-                todo = todo.substring(0, todo.length-10);
-                console.log(todo);
-                color = "";
-                let i = todos.findIndex(i => i.todo == todo);
-                console.log(i);
-
-                todos.splice(i,1);
-                todos.splice(i+1, 0 , {"todo":todo, "color":""});
-
-                showTodo()
-
-            }
-
-            function checkTodo(tmp){
-                console.log("aaaaa")
-                p = tmp.parentNode;
-                todo = p.innerText;
-                todo = todo.substring(0, todo.length-10);
-                let i = todos.findIndex(i => i.todo == todo);
-                if (tmp.checked == true){
-                    todos[i]["color"] = "t";
-                }
-                else todos[i]["color"] = "f";
-
-                showTodo()
-                
-            }
-        </script>
-
-        <div>
-            <h1>TODO list</h1>
-            <input type="text" id="todo" name="todo" value="" size="40px" >
-            <button onclick="addTodo()" style="zoom:1.5;">Add</button>
+        </div>
+        <div class='main'>
+            <h1 >WHAT SHOULD I DO?</h1>
+            <input  onkeyup="enter(event)" type="text" id="todo" name="todo" value="" size="40px" >
+            <button class="addBtn fa fa-plus" onclick="addTodo();" style="zoom:1.5;"></button>
             <ul id='todolist'> 
 
             </ul>
+            <div id='time'></div>
         </div>
-
-        <script>
-            showTodo()
-        </script>
+        <div id="drawer">
+            <span style=" float:right;"><button onclick="tmp()" class="fa fa-times" style="zoom: 1;background-color: #939597; color:white; border: none;"></button></span>
+            
+            <ul style="font-size: 25%; "id='infolist'>
+                <li>I should</li>
+                <li id='info'></li>
+            </ul>
+        </div>
+        <div id="snackbar">Snack Bar</div>
+        <script type="text/javascript" src="./todo.js"></script>
+        
     </body>
 </html>
