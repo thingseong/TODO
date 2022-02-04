@@ -176,7 +176,6 @@ function showInfo(tmp){
     console.log(id);
     let i = todos.findIndex(i => i.id == id);
     todo = todos[i];
-    // info = todo['todo'];
 
 
     e = document.getElementById("todoid");
@@ -190,7 +189,17 @@ function showInfo(tmp){
 
     e = document.getElementById("where");
     e.value = todo['where'];
+    s = e.value;
     // e.innerText = "what? : " + info;
+
+    var ps = new kakao.maps.services.Places(); 
+
+    // 키워드로 장소를 검색합니다
+
+    
+    ps.keywordSearch(s, placesSearchCB);
+
+    
     
 
 }
